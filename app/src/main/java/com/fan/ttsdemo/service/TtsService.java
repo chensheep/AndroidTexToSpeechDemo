@@ -115,6 +115,9 @@ public class TtsService extends Service implements MediaPlayer.OnCompletionListe
 
     private void playVoiceWithText_l(String text) {
         String url = HttpUtils.post("https://iot.cht.com.tw/api/tts/ch/synthesis", "inputText=" + text);
+        if (url == null) {
+            url = HttpUtils.postWithSkipHttpsCertAndCheckHostname("https://iot.cht.com.tw/api/tts/ch/synthesis", "inputText=" + text);
+        }
         try {
             JSONObject jsonObject = new JSONObject(url);
             playVoiceWithUrl_l(jsonObject.getString("file"));
